@@ -7,15 +7,16 @@ mod tests {
     }
 }
 
-use std::fs::read_to_string;
 use std::error::Error;
+use image::buffer::ConvertBuffer;
+use image::GrayImage;
 use image::imageops::FilterType;
 
-const ARG_NUM: usize = 3;
+const ARG_NUM: usize = 2;
+const VALUES: [char; 11] = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@', '█'];
 
 pub struct Config {
     pub file_path: String,
-    pub target_path: String,
 }
 
 impl Config {
@@ -25,22 +26,33 @@ impl Config {
         } else {
             let config = Config {
                 file_path: args[1].clone(),
-                target_path: args[2].clone(),
             };
             Ok(config)
         }
     }   
 }
 
-pub fn format_image(path: &String) -> Result<image::DynamicImage, Box<dyn Error>> {
+pub fn format_image(path: &String) -> Result<image::GrayImage, Box<dyn Error>> {
     let img = image::open(&path)?
-        .grayscale()
-        .resize(400, 400, FilterType::Nearest);
+        .resize(100, 100, FilterType::Nearest)
+        .to_rgb8();
     
+    let img: GrayImage = img.convert();
+
     Ok(img)
 }
 
-pub fn read_file(config: &Config) -> String {
-    let text: String = read_to_string(&config.file_path).unwrap();
-    text
-}
+pub fn image_to_text(img: &image::GrayImage) {
+    let width = img.width();
+    let height = img.height();
+
+    let inter: usize = 256 / 10;
+
+    for y in 0..height {
+        for x in 0..width {
+            let pixel = img.get_pixel(x, y)[0];
+            print!("{}", VALUES[(pixel / inter as u8) as usize]);
+        }
+        println!("");
+    }
+}    

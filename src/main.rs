@@ -14,5 +14,5 @@ fn main() {
         process::exit(1);
     });
 
-    img.save(&config.target_path).unwrap();
+    sita_rs::image_to_text(&img);    
 }
