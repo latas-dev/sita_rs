@@ -9,10 +9,11 @@ fn main() {
         process::exit(1);
     });
 
-    let img = sita_rs::format_image(&config.file_path).unwrap_or_else(|e| {
-        eprintln!("File Error: {e}");
+    let img = sita_rs::format_image(&config.file_path, config.width).unwrap_or_else(|e| {
+        eprintln!("Error processing Image: {e}");
         process::exit(1);
     });
 
-    sita_rs::image_to_text(&img);    
+    sita_rs::image_to_text(&img);  
+    // img.save(&config.target_path).unwrap();
 }
