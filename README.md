@@ -4,10 +4,7 @@ Simple Image to ASCII or sita is what the name implies, a small but effective im
 ## CLI instruction
 The program requests two main arguments:
 + Source file path.
-+ New file path.
++ Desired width in number of chars.
 
 ## To do:
-+ Add command line arguments parsing.
-+ Implement Image Processing.
-+ Manage Errors.
-+ Convert Image to ASCII.
++ Add Sizing and Character argument functionality.
